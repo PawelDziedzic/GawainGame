@@ -8,7 +8,7 @@ namespace Assets.Scripts
     public class ProtoPlayerScript : MappableObjectScript
     {
         public GameObject mySector;
-        public ProtoPlayerScript PlayerInstance;
+        public static ProtoPlayerScript PlayerInstance;
         public float MovementSpeed;
 
         private BasicSectorScript mySectorScript;
@@ -18,9 +18,8 @@ namespace Assets.Scripts
         private float strafeRate;
         private Vector3 movementVector;
         private Vector3 directionVector;
-
-        // Start is called before the first frame update
-        void Start()
+        
+        void OnEnable()
         {
             mySectorScript = mySector.GetComponent<BasicSectorScript>();
             myAnim = GetComponent<Animator>();
@@ -61,6 +60,11 @@ namespace Assets.Scripts
                 transform.rotation = Quaternion.LookRotation(movementVector);
             }
             myRB.AddForce(movementVector, ForceMode.Acceleration);
+        }
+
+        public void SetSector(GameObject newSector)
+        {
+            mySector = newSector;
         }
     }
 }

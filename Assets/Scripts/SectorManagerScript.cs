@@ -8,20 +8,9 @@ namespace Assets.Scripts
     {
         static Dictionary<string,BasicSectorScript> allSectors = new Dictionary<string, BasicSectorScript>();
 
-        // Start is called before the first frame update
-        void OnEnable()
-        {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
-
         public static void AddSector(string name, BasicSectorScript script)
         {
+            script.index = allSectors.Count;
             allSectors.Add(name, script);
         }
 

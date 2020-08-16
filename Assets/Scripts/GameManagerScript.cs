@@ -10,7 +10,9 @@ namespace Assets.Scripts
 {
     class GameManagerScript : MonoBehaviour
     {
-        public GameObject defenderPrefab;
+        public GameObject playerPrefab;
+        public GameObject enemyDefenderPrefab;
+        public GameObject allyDefenderPrefab;
         public GameObject raiderPrefab;
         static DateTime stageStart;
         public Canvas sectorMap;
@@ -18,10 +20,13 @@ namespace Assets.Scripts
         public RawImage[] enemySectorGraph;
         public RawImage[] alliedSectorGraph;
         public static GameManagerScript instance;
-        public static GameObject playerPrefab;
         public List<GameObject> wallPiecePrefabs;
         
-
+        public static GameObject PlayerPrefab()
+        {
+            return instance.playerPrefab;
+        }
+        
         public static GameObject RandomWallPiece()
         {
             System.Random rnd = new System.Random();
@@ -39,9 +44,14 @@ namespace Assets.Scripts
             return instance.messageCanvas;
         }
 
-        public static GameObject DefenderPrefab()
+        public static GameObject EnemyDefenderPrefab()
         {
-            return instance.defenderPrefab;
+            return instance.enemyDefenderPrefab;
+        }
+
+        public static GameObject AllyDefenderPrefab()
+        {
+            return instance.allyDefenderPrefab;
         }
 
         public static GameObject RaiderPrefab()

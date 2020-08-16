@@ -86,9 +86,19 @@ namespace Assets.Scripts
 
         void SpawnDefenders(int n)
         {
+            GameObject prefab;
+            if (isAllied.Value)
+            {
+                prefab = GameManagerScript.AllyDefenderPrefab();
+            }
+            else
+            {
+                prefab = GameManagerScript.EnemyDefenderPrefab();
+            }
+
             for (int i = 0; i < n; i++)
             {
-                GameObject newDefender = GameObject.Instantiate(GameManagerScript.DefenderPrefab(), GetSpawnPoint(), Quaternion.identity);
+                GameObject newDefender = GameObject.Instantiate(prefab, GetSpawnPoint(), Quaternion.identity);
                 DefendingAggressorScript dScript = newDefender.GetComponent<DefendingAggressorScript>();
                 activeDefenders.Add(newDefender.name, dScript);
                 dScript.isAllied = isAllied.Value;

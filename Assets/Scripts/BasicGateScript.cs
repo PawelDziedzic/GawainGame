@@ -11,29 +11,42 @@ namespace Assets.Scripts
     class BasicGateScript : MappableObjectScript
     {
         public GameObject otherGate;
-        public GameObject mySector;
-        bool playerIsIn;
+        public GameObject theSector;
 
+        private BasicSectorScript mySectorScript;
+        private Vector3 SpawnPoint;
+
+        public void OnEnable()
+        {
+            mySectorScript = theSector.GetComponent<BasicSectorScript>();
+            SpawnPoint = new Vector3(transform.position.x, 1, transform.position.z);
+        }
 
         private void OnTriggerStay(Collider other)
         {
-            if(!playerIsIn && other.gameObject.name == "Player")
+            if (other.gameObject.name == "ProtoPlayer") 
             {
-                playerIsIn = true;
+                if (Input.GetButtonDown("Fire1"))
+                {
+                    Debug.Log("Fire in the trigger");
+                    SendPlayer();
+                }
             }
         }
 
         private void SendPlayer()
         {
-            //turn off my sector
-            //player starts flying
+            mySectorScript.Automate();
             otherGate.GetComponent<BasicGateScript>().ReceivePlayer();
+            Debug.Log("Sent to " + theSector.name);
         }
 
         public void ReceivePlayer()
         {
-            //turn on my sector
-            //spawn player
+            Debug.Log("received in " + theSector.name);
+            mySectorScript.Activate();
+            ProtoPlayerScript.PlayerInstance.transform.position = SpawnPoint;
+            ProtoPlayerScript.PlayerInstance.SetSector(theSector);
         }
     }
 }
