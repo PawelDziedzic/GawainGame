@@ -10,6 +10,7 @@ namespace Assets.Scripts
         public GameObject mySector;
         public static ProtoPlayerScript PlayerInstance;
         public float MovementSpeed;
+        public GameObject attackPrefab;
 
         private BasicSectorScript mySectorScript;
         private Rigidbody myRB;
@@ -39,6 +40,8 @@ namespace Assets.Scripts
 
             ReadMovementInput();
 
+            ReadActionInput();
+
             ApplyMovement();
         }
 
@@ -51,6 +54,15 @@ namespace Assets.Scripts
             strafeRate *= Time.deltaTime;
 
             movementVector = (Vector3.right * strafeRate + Vector3.forward * movementRate).normalized * MovementSpeed;
+        }
+
+        void ReadActionInput()
+        {
+            if (Input.GetButtonDown("Jump"))
+            {
+                GameObject attack = Instantiate(attackPrefab, transform.position + transform.forward, Quaternion.identity);
+                attack.transform.Rotate(Vector3.up, 45);
+            }
         }
 
         void ApplyMovement()

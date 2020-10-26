@@ -115,7 +115,7 @@ namespace Assets.Scripts
 
         public void Deactivate()
         {
-            myAnimator.SetTrigger("deactivate");
+            myAnimator.SetTrigger("Deactivate");
 
             if (myAnimator.GetCurrentAnimatorStateInfo(0).IsName("Active"))
             {
@@ -125,14 +125,14 @@ namespace Assets.Scripts
 
         public void Activate()
         {
-            myAnimator.SetTrigger("activate");
+            myAnimator.SetTrigger("Activate");
 
             ActivateAggressors();
         }
 
         public void Automate()
         {
-            myAnimator.SetTrigger("automate");
+            myAnimator.SetTrigger("Automate");
 
             if(myAnimator.GetCurrentAnimatorStateInfo(0).IsName("Active"))
             {
