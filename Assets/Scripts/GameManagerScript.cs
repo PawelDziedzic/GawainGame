@@ -21,12 +21,7 @@ namespace Assets.Scripts
         public RawImage[] alliedSectorGraph;
         public static GameManagerScript instance;
         public List<GameObject> wallPiecePrefabs;
-        
-        public static GameObject PlayerPrefab()
-        {
-            return instance.playerPrefab;
-        }
-        
+
         public static GameObject RandomWallPiece()
         {
             System.Random rnd = new System.Random();

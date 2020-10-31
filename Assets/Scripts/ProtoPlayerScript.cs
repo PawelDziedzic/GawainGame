@@ -8,9 +8,11 @@ namespace Assets.Scripts
     public class ProtoPlayerScript : MappableObjectScript
     {
         public GameObject mySector;
-        public static ProtoPlayerScript PlayerInstance;
         public float MovementSpeed;
         public GameObject attackPrefab;
+
+        public static ProtoPlayerScript PlayerInstance;
+        public static int sendThroughGate;
 
         private BasicSectorScript mySectorScript;
         private Rigidbody myRB;
@@ -19,11 +21,13 @@ namespace Assets.Scripts
         private float strafeRate;
         private Vector3 movementVector;
         private Vector3 directionVector;
+        private Vector3 attackDimensions;
         
         void OnEnable()
         {
             mySectorScript = mySector.GetComponent<BasicSectorScript>();
             myAnim = GetComponent<Animator>();
+            attackDimensions = new Vector3(1f, 0.25f, 1f);
 
             if (PlayerInstance == null)
             {
@@ -32,8 +36,8 @@ namespace Assets.Scripts
 
             myRB = GetComponent<Rigidbody>();
         }
+        
 
-        // Update is called once per frame
         void Update()
         {
             myRB.AddForce(-myRB.velocity, ForceMode.VelocityChange);
@@ -43,6 +47,11 @@ namespace Assets.Scripts
             ReadActionInput();
 
             ApplyMovement();
+
+            if(transform.position.magnitude > 100)
+            {
+                Time.timeScale = 0;
+            }
         }
 
         void ReadMovementInput()
@@ -50,18 +59,39 @@ namespace Assets.Scripts
             movementRate = Input.GetAxis("Vertical");
             movementRate *= Time.deltaTime;
 
-            strafeRate = Input.GetAxis("Horizontal");
-            strafeRate *= Time.deltaTime;
+            //strafeRate = Input.GetAxis("Horizontal");
+            strafeRate = Mathf.Sin(2 * Time.time);
+            //strafeRate *= Time.deltaTime;
 
             movementVector = (Vector3.right * strafeRate + Vector3.forward * movementRate).normalized * MovementSpeed;
+
+            Debug.Log(string.Format("strafe rate: {0}, movement vector x: {1}", strafeRate, movementVector.x));
         }
 
         void ReadActionInput()
         {
             if (Input.GetButtonDown("Jump"))
             {
-                GameObject attack = Instantiate(attackPrefab, transform.position + transform.forward, Quaternion.identity);
-                attack.transform.Rotate(Vector3.up, 45);
+                Collider[] attacked = Physics.OverlapBox(transform.position + transform.forward, attackDimensions, Quaternion.Euler(0f, 45f, 0f));
+
+                for (int i = 0; i< attacked.Length; i++)
+                {
+                    Debug.Log(attacked[i].name);
+                }
+            }
+
+            if (Input.GetButtonDown("Fire1"))
+            {
+                StartCoroutine(SendTimer());
+            }
+        }
+
+        System.Collections.IEnumerator SendTimer()
+        {
+            for (sendThroughGate = 30; sendThroughGate > 0; --sendThroughGate)
+            {
+                Debug.Log("Send! " + sendThroughGate);
+                yield return null;
             }
         }
 

@@ -26,9 +26,9 @@ namespace Assets.Scripts
         {
             if (other.gameObject.name == "ProtoPlayer") 
             {
-                if (Input.GetButtonDown("Fire1"))
+                if (ProtoPlayerScript.sendThroughGate > 0)
                 {
-                    Debug.Log("Fire in the trigger");
+                    ProtoPlayerScript.sendThroughGate = 0;
                     SendPlayer();
                 }
             }
