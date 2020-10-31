@@ -8,8 +8,8 @@ namespace Assets.Scripts
     public class ProtoPlayerScript : MappableObjectScript
     {
         public GameObject mySector;
-        public float MovementSpeed;
-        public GameObject attackPrefab;
+        public float MovementSpeed = 500;
+        public float maxMagnitude = 1f;
 
         public static ProtoPlayerScript PlayerInstance;
         public static int sendThroughGate;
@@ -20,7 +20,6 @@ namespace Assets.Scripts
         private float movementRate;
         private float strafeRate;
         private Vector3 movementVector;
-        private Vector3 directionVector;
         private Vector3 attackDimensions;
         
         void OnEnable()
@@ -63,9 +62,13 @@ namespace Assets.Scripts
             strafeRate = Mathf.Sin(2 * Time.time);
             //strafeRate *= Time.deltaTime;
 
-            movementVector = (Vector3.right * strafeRate + Vector3.forward * movementRate).normalized * MovementSpeed;
+            movementVector = Vector3.ClampMagnitude
+                (
+                (Vector3.right * strafeRate + Vector3.forward * movementRate),
+                maxMagnitude
+                ) * MovementSpeed;
 
-            Debug.Log(string.Format("strafe rate: {0}, movement vector x: {1}", strafeRate, movementVector.x));
+            Debug.Log(string.Format("name: {0}, strafe rate: {1}, movement vector x: {2}", gameObject.name, strafeRate, movementVector.x));
         }
 
         void ReadActionInput()
