@@ -12,18 +12,20 @@ namespace Assets.Scripts
         protected BasicSectorScript thisSectorScript;
         public bool isAllied;
         Animator myAnimator;
-        public static byte basicDamage;
+        public static int basicDamage;
 
         void OnEnable()
         {
             thisSectorScript = thisSector.GetComponent<BasicSectorScript>();
             myAnimator = gameObject.GetComponent<Animator>();
+            healthBar = maxHealth;
         }
 
-        public void TakeDamage(byte dmg)
+        public void TakeDamage(int dmg)
         {
             healthBar -= dmg;
-            if (healthBar >= 0)
+
+            if (healthBar <= 0)
                 BecomeDestroyed();
         }
 
